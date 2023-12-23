@@ -4,6 +4,9 @@ import Item from 'components/Item';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './Categoria.module.scss';
+import { useEffect } from 'react';
+// import instance from 'common/config/api';
+import axios from 'axios';
 
 export default function Categoria() {
   const navigate = useNavigate();

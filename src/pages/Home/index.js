@@ -2,12 +2,27 @@ import Header from 'components/Header';
 import styles from './Home.module.scss';
 import relogio from 'assets/inicial.png';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Button';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { adicionarCategorias } from 'store/reducers/categorias';
 
 export default function Home() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const categorias = useSelector(state => state.categorias);
+
+  async function buscarCategorias() {
+    const resposta = await axios.get('http://localhost:3001/categorias')
+    dispatch(adicionarCategorias(resposta.data))
+  }
+
+  useEffect(() => {
+    buscarCategorias()
+  }, [])
+
+
   return (
     <div>
       <Header
