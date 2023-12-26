@@ -5,22 +5,29 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'components/Button';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { adicionarCategorias } from 'store/reducers/categorias';
+import { adicionarItens } from 'store/reducers/itens';
 
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const categorias = useSelector(state => state.categorias);
 
-  async function buscarCategorias() {
+  const buscarCategorias = useCallback(async () => {
     const resposta = await axios.get('http://localhost:3001/categorias')
     dispatch(adicionarCategorias(resposta.data))
-  }
+  }, [dispatch]);
+
+  const buscarItens = useCallback(async () => {
+    const resposta = await axios.get('http://localhost:3001/itens')
+    dispatch(adicionarItens(resposta.data))
+  }, [dispatch]);
 
   useEffect(() => {
-    buscarCategorias()
-  }, [])
+    buscarCategorias();
+    buscarItens();
+  }, [buscarCategorias, buscarItens])
 
 
   return (
